@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #f8faf9;
+  color: #06142b;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(6, 63, 40, 0.1);
+  box-shadow: 0 18px 45px rgba(6, 20, 43, 0.08);
+  backdrop-filter: blur(16px);
+}
+
+input,
+select,
+textarea {
+  color: #06142b;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #64746b;
+}
