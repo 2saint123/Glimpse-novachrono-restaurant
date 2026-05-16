@@ -41,7 +41,7 @@ export default function ReservationsPage() {
           </button>
         ))}
       </div>
-      <button onClick={reserve} className="mt-6 rounded bg-softGreen px-6 py-3 text-black">Confirm Reservation</button>
+      <button onClick={reserve} className="mt-6 rounded bg-softGreen px-6 py-3 text-white transition-all duration-300 hover:bg-orange-500 hover:ring-2 hover:ring-softGreen">Confirm Reservation</button>
     </div>
   );
 }

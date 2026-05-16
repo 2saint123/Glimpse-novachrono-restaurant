@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import api from "../services/api";
 import { useCart } from "../state/CartContext";
 import { useAuth } from "../state/AuthContext";
+import { FiSearch, FiShoppingCart, FiPlus, FiMinus, FiTrash2 } from "react-icons/fi";
 
 const categories = ["", "Breakfast", "Lunch", "Dinner", "Drinks", "Desserts"];
 
@@ -43,61 +44,148 @@ export default function MenuPage() {
   };
 
   return (
-    <div className="mx-auto max-w-7xl px-6 pt-28">
-      <h1 className="text-4xl text-softGreen">Luxury Menu</h1>
-      <div className="my-6 flex flex-wrap gap-3">
-        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search dishes..." className="rounded bg-zinc-900 p-3" />
-        <select value={category} onChange={(e) => setCategory(e.target.value)} className="rounded bg-zinc-900 p-3">
-          {categories.map((c) => <option key={c} value={c}>{c || "All Categories"}</option>)}
-        </select>
-      </div>
-      <div className="grid gap-6 md:grid-cols-3">
-        {items.map((item) => (
-          <article key={item.id} className="glass rounded-xl p-4">
-            <img src={item.imageUrl || "https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=900&q=80"} className="h-52 w-full rounded-lg object-cover" />
-            <h3 className="mt-3 text-xl">{item.name}</h3>
-            <p className="text-sm text-zinc-300">{item.description}</p>
-            <p className="mt-2 text-softGreen">{Number(item.price).toLocaleString()} RWF</p>
-            <button onClick={() => addItem(item)} className="mt-3 rounded bg-softGreen px-4 py-2 text-black">Add to Order</button>
-          </article>
-        ))}
-      </div>
-      <aside className="mt-8 rounded-xl bg-zinc-900 p-5">
-        <h2 className="text-2xl text-softGreen">Current Order</h2>
-        {!cartItems.length ? (
-          <p className="mt-3 text-zinc-300">Your order is empty.</p>
-        ) : (
-          <div className="mt-4 space-y-3">
-            {cartItems.map((item) => (
-              <div key={item.id} className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-3">
-                <div>
-                  <p>{item.name}</p>
-                  <p className="text-sm text-zinc-400">{Number(item.price).toLocaleString()} RWF</p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <button onClick={() => updateQty(item.id, item.qty - 1)} className="rounded bg-zinc-800 px-3 py-1">-</button>
-                  <span className="w-8 text-center">{item.qty}</span>
-                  <button onClick={() => updateQty(item.id, item.qty + 1)} className="rounded bg-zinc-800 px-3 py-1">+</button>
-                  <button onClick={() => removeItem(item.id)} className="rounded bg-red-500 px-3 py-1 text-black">Remove</button>
-                </div>
-              </div>
-            ))}
-            <textarea
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              placeholder="Order notes"
-              className="w-full rounded bg-zinc-800 p-3"
+    <div className="min-h-screen bg-dark pt-28">
+      <div className="mx-auto max-w-7xl px-6">
+        <div className="mb-12 text-center">
+          <p className="text-sm font-bold uppercase tracking-widest text-gold">Our Selection</p>
+          <h1 className="mt-4 text-5xl font-black text-light">Luxury Menu</h1>
+          <p className="mt-4 text-slate">Discover our exquisite culinary creations</p>
+        </div>
+
+        <div className="mb-8 flex flex-wrap gap-4">
+          <div className="relative flex-1 min-w-[250px]">
+            <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gold" />
+            <input 
+              value={q} 
+              onChange={(e) => setQ(e.target.value)} 
+              placeholder="Search dishes..." 
+              className="w-full rounded-xl border border-gold/20 bg-charcoal py-3 pl-12 pr-4 text-light outline-none transition focus:border-gold" 
             />
-            <div className="grid gap-2 text-sm md:grid-cols-3">
-              <p>Subtotal: {totals.subtotal.toLocaleString()} RWF</p>
-              <p>Tax: {totals.tax.toLocaleString()} RWF</p>
-              <p className="text-softGreen">Total: {totals.total.toLocaleString()} RWF</p>
-            </div>
-            <button onClick={placeOrder} className="rounded bg-softGreen px-5 py-3 text-black">Place Order</button>
           </div>
-        )}
-        {message && <p className="mt-3 text-sm text-softGreen">{message}</p>}
-      </aside>
+          <select 
+            value={category} 
+            onChange={(e) => setCategory(e.target.value)} 
+            className="rounded-xl border border-gold/20 bg-charcoal px-6 py-3 text-light outline-none transition focus:border-gold"
+          >
+            {categories.map((c) => <option key={c} value={c}>{c || "All Categories"}</option>)}
+          </select>
+        </div>
+
+        <div className="grid gap-6 lg:grid-cols-[1fr_400px]">
+          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            {items.map((item) => (
+              <article key={item.id} className="group glass overflow-hidden rounded-2xl transition hover:border-gold/40">
+                <div className="relative h-52 overflow-hidden">
+                  <img 
+                    src={item.imageUrl || "https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=900&q=80"} 
+                    alt={item.name}
+                    className="h-full w-full object-cover transition duration-500 group-hover:scale-110" 
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-dark via-transparent to-transparent opacity-60"></div>
+                </div>
+                <div className="p-5">
+                  <h3 className="text-xl font-bold text-light">{item.name}</h3>
+                  <p className="mt-2 text-sm text-slate line-clamp-2">{item.description}</p>
+                  <div className="mt-4 flex items-center justify-between">
+                    <p className="text-xl font-bold text-gold">{Number(item.price).toLocaleString()} RWF</p>
+                    <button 
+                      onClick={() => addItem(item)} 
+                      className="flex items-center gap-2 rounded-lg bg-gradient px-4 py-2 text-sm font-bold text-dark transition hover:shadow-lg hover:shadow-gold/30"
+                    >
+                      <FiPlus /> Add
+                    </button>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <aside className="glass sticky top-28 h-fit rounded-2xl p-6">
+            <h2 className="mb-6 flex items-center gap-2 text-2xl font-black text-gold">
+              <FiShoppingCart /> Current Order
+            </h2>
+            {!cartItems.length ? (
+              <div className="py-12 text-center">
+                <FiShoppingCart className="mx-auto mb-4 text-5xl text-slate" />
+                <p className="text-slate">Your order is empty.</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <div className="max-h-[400px] space-y-3 overflow-y-auto pr-2">
+                  {cartItems.map((item) => (
+                    <div key={item.id} className="rounded-xl border border-gold/10 bg-dark/50 p-4">
+                      <div className="mb-3 flex items-start justify-between">
+                        <div className="flex-1">
+                          <p className="font-semibold text-light">{item.name}</p>
+                          <p className="text-sm text-gold">{Number(item.price).toLocaleString()} RWF</p>
+                        </div>
+                        <button 
+                          onClick={() => removeItem(item.id)} 
+                          className="text-red-400 transition hover:text-red-300"
+                          aria-label="Remove item"
+                        >
+                          <FiTrash2 />
+                        </button>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <button 
+                          onClick={() => updateQty(item.id, item.qty - 1)} 
+                          className="grid h-8 w-8 place-items-center rounded-lg bg-charcoal text-gold transition hover:bg-gold hover:text-dark"
+                        >
+                          <FiMinus />
+                        </button>
+                        <span className="w-12 text-center font-bold text-light">{item.qty}</span>
+                        <button 
+                          onClick={() => updateQty(item.id, item.qty + 1)} 
+                          className="grid h-8 w-8 place-items-center rounded-lg bg-charcoal text-gold transition hover:bg-gold hover:text-dark"
+                        >
+                          <FiPlus />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <textarea
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                  placeholder="Special instructions or dietary requirements..."
+                  className="w-full rounded-xl border border-gold/20 bg-charcoal p-4 text-sm text-light outline-none transition focus:border-gold"
+                  rows="3"
+                />
+
+                <div className="space-y-2 border-t border-gold/20 pt-4 text-sm">
+                  <div className="flex justify-between text-slate">
+                    <span>Subtotal:</span>
+                    <span>{totals.subtotal.toLocaleString()} RWF</span>
+                  </div>
+                  <div className="flex justify-between text-slate">
+                    <span>Tax (18%):</span>
+                    <span>{totals.tax.toLocaleString()} RWF</span>
+                  </div>
+                  <div className="flex justify-between border-t border-gold/20 pt-2 text-lg font-bold text-gold">
+                    <span>Total:</span>
+                    <span>{totals.total.toLocaleString()} RWF</span>
+                  </div>
+                </div>
+
+                <button 
+                  onClick={placeOrder} 
+                  className="w-full rounded-xl bg-gradient py-4 font-bold text-dark shadow-lg shadow-gold/30 transition hover:shadow-gold/50"
+                >
+                  Place Order
+                </button>
+
+                {message && (
+                  <p className={`rounded-xl p-3 text-center text-sm font-semibold ${message.includes('success') ? 'bg-gold/20 text-gold' : 'bg-red-500/20 text-red-400'}`}>
+                    {message}
+                  </p>
+                )}
+              </div>
+            )}
+          </aside>
+        </div>
+      </div>
     </div>
   );
 }

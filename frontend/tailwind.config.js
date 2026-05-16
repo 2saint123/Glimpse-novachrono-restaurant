@@ -4,14 +4,21 @@ export default {
   theme: {
     extend: {
       colors: {
-        luxuryGold: "#16a34a",
-        deepBlack: "#f8faf9",
-        softGreen: "#0f8f4d",
-        forest: "#063f28",
-        ink: "#06142b"
+        primary: "#d4af37",
+        secondary: "#1a1a1a",
+        accent: "#c9a961",
+        dark: "#0a0a0a",
+        light: "#f8f6f3",
+        cream: "#faf8f5",
+        gold: "#d4af37",
+        darkGold: "#b8941f",
+        charcoal: "#2d2d2d",
+        slate: "#64748b"
       },
       backgroundImage: {
-        hero: "linear-gradient(90deg, rgba(3,63,40,.86), rgba(6,83,51,.62)), linear-gradient(180deg, rgba(7,73,43,.12), rgba(3,63,40,.86)), url('https://images.unsplash.com/photo-1559329007-40df8a9345d8?auto=format&fit=crop&w=1900&q=80')"
+        hero: "linear-gradient(135deg, rgba(0,0,0,.65), rgba(26,26,26,.55)), url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=2070&q=80')",
+        authBg: "linear-gradient(135deg, rgba(0,0,0,.75), rgba(212,175,55,.25)), url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=2070&q=80')",
+        gradient: "linear-gradient(135deg, #d4af37 0%, #c9a961 100%)"
       }
     }
   },

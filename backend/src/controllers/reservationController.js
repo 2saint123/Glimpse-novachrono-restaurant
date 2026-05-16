@@ -126,11 +126,22 @@ const rejectReservation = async (req, res, next) => {
   }
 };
 
+const completeReservation = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    await pool.query("UPDATE reservations SET status='completed' WHERE id=?", [id]);
+    res.json({ message: "Reservation marked as completed" });
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   getAvailability,
   createReservation,
   myReservations,
   cancelReservation,
   approveReservation,
-  rejectReservation
+  rejectReservation,
+  completeReservation
 };

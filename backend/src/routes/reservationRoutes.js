@@ -8,5 +8,6 @@ router.get("/mine", verifyToken, allowRoles("customer"), c.myReservations);
 router.patch("/:id/cancel", verifyToken, allowRoles("customer"), c.cancelReservation);
 router.patch("/:id/approve", verifyToken, allowRoles("admin"), c.approveReservation);
 router.patch("/:id/reject", verifyToken, allowRoles("admin"), c.rejectReservation);
+router.patch("/:id/complete", verifyToken, allowRoles("admin"), c.completeReservation);
 
 module.exports = router;
