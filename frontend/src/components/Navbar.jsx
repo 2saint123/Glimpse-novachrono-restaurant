@@ -4,7 +4,7 @@ import { FiMenu, FiX, FiUser, FiLogOut, FiCalendar, FiShoppingBag } from "react-
 import { MdRestaurant } from "react-icons/md";
 import { useAuth } from "../state/AuthContext";
 import { useCart } from "../state/CartContext";
-import { useCart } from "../state/CartContext";
+
 
 const links = [
   { name: "Home", path: "/" },

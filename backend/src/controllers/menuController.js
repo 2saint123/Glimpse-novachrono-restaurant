@@ -1,5 +1,14 @@
 const pool = require("../config/db");
 
+const getCategories = async (req, res, next) => {
+  try {
+    const [rows] = await pool.query("SELECT id, name FROM categories ORDER BY id");
+    res.json(rows);
+  } catch (err) {
+    next(err);
+  }
+};
+
 const getMenu = async (req, res, next) => {
   try {
     const { q = "", category = "" } = req.query;
@@ -70,4 +79,4 @@ const deleteMenuItem = async (req, res, next) => {
   }
 };
 
-module.exports = { getMenu, createMenuItem, updateMenuItem, deleteMenuItem };
+module.exports = { getCategories, getMenu, createMenuItem, updateMenuItem, deleteMenuItem };
