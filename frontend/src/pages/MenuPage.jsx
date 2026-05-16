@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import api from "../services/api";
 import { useCart } from "../state/CartContext";
 import { useAuth } from "../state/AuthContext";
@@ -15,7 +16,6 @@ export default function MenuPage() {
   const [items, setItems] = useState([]);
   const [loadingMenu, setLoadingMenu] = useState(true);
   const [loadingCategories, setLoadingCategories] = useState(true);
-  const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const { user } = useAuth();
   const { items: cartItems, addItem, updateQty, removeItem, clearCart, totals } = useCart();
@@ -45,28 +45,6 @@ export default function MenuPage() {
       .finally(() => setLoadingMenu(false));
   }, [q, categoryQuery]);
 
-  const placeOrder = async () => {
-    setMessage("");
-    if (!user) {
-      setMessage("Please log in as a customer before placing an order.");
-      return;
-    }
-    if (user.role !== "customer") {
-      setMessage("Only customer accounts can place orders.");
-      return;
-    }
-    if (!cartItems.length) {
-      setMessage("Add at least one menu item first.");
-      return;
-    }
-
-    await api.post("/orders", {
-      notes: "",
-      items: cartItems.map((item) => ({ menuItemId: item.id, quantity: item.qty }))
-    });
-    clearCart();
-    setMessage("Order placed successfully.");
-  };
 
   return (
     <div className="min-h-screen bg-dark text-light pt-28">
@@ -226,14 +204,13 @@ export default function MenuPage() {
                   <div className="mt-4 border-t border-gold/10 pt-4 text-lg font-black text-gold flex justify-between"><span>Total</span><span>{totals.total.toLocaleString()} RWF</span></div>
                 </div>
 
-                <button onClick={placeOrder} className="w-full rounded-full bg-gold px-6 py-4 text-sm font-bold uppercase text-dark transition hover:bg-darkGold">
-                  Place Order
-                </button>
+                <Link
+                  to="/checkout"
+                  className={`w-full inline-flex items-center justify-center rounded-full bg-gold px-6 py-4 text-sm font-bold uppercase text-dark transition hover:bg-darkGold ${!cartItems.length ? "opacity-50 pointer-events-none" : ""}`}
+                >
+                  Proceed to Checkout
+                </Link>
               </div>
-            )}
-
-            {message && (
-              <div className="mt-6 rounded-3xl bg-gold/10 p-4 text-center text-sm font-semibold text-gold">{message}</div>
             )}
           </aside>
         </div>

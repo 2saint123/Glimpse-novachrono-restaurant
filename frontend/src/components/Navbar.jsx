@@ -3,6 +3,8 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 import { FiMenu, FiX, FiUser, FiLogOut, FiCalendar, FiShoppingBag } from "react-icons/fi";
 import { MdRestaurant } from "react-icons/md";
 import { useAuth } from "../state/AuthContext";
+import { useCart } from "../state/CartContext";
+import { useCart } from "../state/CartContext";
 
 const links = [
   { name: "Home", path: "/" },
@@ -17,6 +19,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const { user, logout } = useAuth();
+  const { items: cartItems } = useCart();
   const location = useLocation();
 
   useEffect(() => {
@@ -64,8 +67,27 @@ export default function Navbar() {
               </NavLink>
             );
           })}
+          {user?.role === "customer" && (
+            <NavLink
+              to="/orders"
+              onClick={() => setOpen(false)}
+              className={`group relative py-2 text-sm font-semibold uppercase tracking-wider transition ${location.pathname === "/orders" ? 'text-gold' : 'text-light hover:text-gold'}`}
+            >
+              Orders
+              <span className={`absolute -bottom-1 left-0 h-0.5 bg-gradient transition-all ${location.pathname === "/orders" ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
+            </NavLink>
+          )}
 
           <div className="mt-4 flex items-center gap-4 lg:ml-4 lg:mt-0">
+            {user?.role === "customer" && cartItems.length > 0 && (
+              <Link
+                to="/checkout"
+                onClick={() => setOpen(false)}
+                className="hidden rounded-full border border-gold/30 bg-gold/10 px-4 py-2 text-sm font-semibold text-gold transition hover:bg-gold/20 lg:inline-flex"
+              >
+                <FiShoppingBag /> Checkout
+              </Link>
+            )}
             {!user ? (
               <>
                 <Link 

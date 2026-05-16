@@ -9,6 +9,8 @@ import MenuPage from "./pages/MenuPage";
 import ReservationsPage from "./pages/ReservationsPage";
 import ContactPage from "./pages/ContactPage";
 import AdminPage from "./pages/AdminPage";
+import CheckoutPage from "./pages/CheckoutPage";
+import OrdersPage from "./pages/OrdersPage";
 import WaiterPage from "./pages/WaiterPage";
 import { ForgotPasswordPage, LoginPage, SignUpPage } from "./pages/AuthPages";
 
@@ -20,6 +22,8 @@ export default function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/menu" element={<MenuPage />} />
+        <Route path="/checkout" element={<ProtectedRoute roles={["customer"]}><CheckoutPage /></ProtectedRoute>} />
+        <Route path="/orders" element={<ProtectedRoute roles={["customer"]}><OrdersPage /></ProtectedRoute>} />
         <Route path="/reservations" element={<ProtectedRoute roles={["customer"]}><ReservationsPage /></ProtectedRoute>} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/login" element={<LoginPage />} />

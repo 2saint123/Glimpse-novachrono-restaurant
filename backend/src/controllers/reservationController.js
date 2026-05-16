@@ -51,6 +51,18 @@ const createReservation = async (req, res, next) => {
        VALUES (?, ?, ?, ?, ?, ?, 'pending')`,
       [req.user.id, tableId, reservationDate, reservationTime, guests, notes || null]
     );
+
+    const [userRows] = await pool.query("SELECT email, full_name AS fullName FROM users WHERE id = ?", [req.user.id]);
+    if (userRows.length) {
+      await sendEmail({
+        to: userRows[0].email,
+        subject: "Reservation Request Received",
+        html: `<p>Hello ${userRows[0].fullName},</p>
+               <p>Your reservation request has been received and is awaiting approval.</p>
+               <p>We will notify you once an admin approves it.</p>`
+      });
+    }
+
     res.status(201).json({ message: "Reservation submitted and awaiting approval" });
   } catch (err) {
     next(err);

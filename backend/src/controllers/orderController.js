@@ -41,14 +41,35 @@ const placeOrder = async (req, res, next) => {
         [orderResult.insertId, item.menuItemId, item.quantity, price]
       );
     }
+    if (paymentStatus === "paid") {
+      await conn.query(
+        `INSERT INTO payments (order_id, amount, method, status)
+         VALUES (?, ?, ?, ?)`,
+        [orderResult.insertId, total, "online", "paid"]
+      );
+    }
+
     await conn.commit();
 
     const [admin] = await conn.query("SELECT email FROM users WHERE role='admin' LIMIT 1");
+    const [customer] = await conn.query("SELECT email, full_name AS fullName FROM users WHERE id=?", [req.user.id]);
+
     if (admin.length) {
       await sendEmail({
         to: admin[0].email,
         subject: "New Customer Order",
         html: `<p>New order received. Total: ${total.toLocaleString()} RWF</p>`
+      });
+    }
+
+    if (customer.length) {
+      await sendEmail({
+        to: customer[0].email,
+        subject: "Order Received - Glimpse Restaurant",
+        html: `<p>Hello ${customer[0].fullName},</p>
+               <p>Your order has been received successfully.</p>
+               <p><strong>Total:</strong> ${total.toLocaleString()} RWF</p>
+               <p>Thank you for choosing Glimpse Restaurant.</p>`
       });
     }
 
