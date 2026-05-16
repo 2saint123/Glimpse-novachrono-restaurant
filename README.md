@@ -20,6 +20,8 @@ Full-stack luxury restaurant management and reservation platform.
 
 1. Create MySQL database and tables:
    - Run `DATABASE_SCHEMA.sql`
+   - Use the `categories` and `menu_items` tables for the menu system
+   - Store image paths in `menu_items.image_url` as relative paths like `images/steak.jpg`
 2. The admin seed is:
    - Email: `rwetoussanthony@gmail.com`
    - Password: `2saint123`
@@ -93,6 +95,7 @@ npm run dev
 - `PUT /api/auth/me`
 - `PUT /api/auth/change-password`
 - `GET /api/menu`
+- `GET /api/menu/categories`
 - `POST /api/menu` (admin)
 - `PUT /api/menu/:id` (admin)
 - `DELETE /api/menu/:id` (admin)

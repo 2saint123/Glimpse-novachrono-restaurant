@@ -3,15 +3,27 @@ const pool = require("../config/db");
 const getMenu = async (req, res, next) => {
   try {
     const { q = "", category = "" } = req.query;
-    const [rows] = await pool.query(
-      `SELECT m.id, m.name, m.description, m.price, m.image_url AS imageUrl, c.name AS category
+    const categoryGroups = {
+      Foods: ["Foods", "Breakfast", "Lunch", "Dinner"],
+      Drinks: ["Drinks"],
+      Desserts: ["Desserts"]
+    };
+    const selectedCategories = categoryGroups[category] || (category ? [category] : []);
+
+    let query = `SELECT m.id, m.name, m.description, m.price, m.image_url AS imageUrl, c.name AS category
        FROM menu_items m
        JOIN categories c ON c.id = m.category_id
-       WHERE (? = '' OR m.name LIKE CONCAT('%', ?, '%'))
-         AND (? = '' OR c.name = ?)
-       ORDER BY m.created_at DESC`,
-      [q, q, category, category]
-    );
+       WHERE (? = '' OR (m.name LIKE CONCAT('%', ?, '%') OR m.description LIKE CONCAT('%', ?, '%'))) `;
+    const params = [q, q, q];
+
+    if (selectedCategories.length) {
+      const placeholders = selectedCategories.map(() => "?").join(", ");
+      query += `AND c.name IN (${placeholders}) `;
+      params.push(...selectedCategories);
+    }
+
+    query += "ORDER BY m.created_at DESC";
+    const [rows] = await pool.query(query, params);
     res.json(rows);
   } catch (err) {
     next(err);

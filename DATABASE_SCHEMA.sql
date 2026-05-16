@@ -143,7 +143,15 @@ ON DUPLICATE KEY UPDATE
 
 -- Categories
 INSERT INTO categories (name) VALUES
-('Breakfast'), ('Lunch'), ('Dinner'), ('Drinks'), ('Desserts');
+('Breakfast'), ('Lunch'), ('Dinner'), ('Drinks'), ('Desserts'), ('Foods');
+
+-- Menu Items - Foods
+INSERT INTO menu_items (name, description, price, category_id, image_url) VALUES
+('Truffle Mushroom Risotto', 'Creamy arborio rice with wild mushrooms, black truffle oil, and shaved parmesan', 18500, 6, 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=900&q=80'),
+('Herb-Roasted Chicken', 'Juicy half chicken roasted with rosemary, garlic, and lemon', 17000, 6, 'https://images.unsplash.com/photo-1543362906-acfc16c67564?auto=format&fit=crop&w=900&q=80'),
+('Seared Tuna Steak', 'Ahi tuna seared rare with sesame crust and soy-lime glaze', 22000, 6, 'https://images.unsplash.com/photo-1498654896293-37aacf113fd9?auto=format&fit=crop&w=900&q=80'),
+('Charred Vegetable Platter', 'Seasonal vegetables charred and finished with herb vinaigrette', 14000, 6, 'https://images.unsplash.com/photo-1468071174046-657d9d351a40?auto=format&fit=crop&w=900&q=80'),
+('Braised Short Ribs', 'Slow-braised beef short ribs with red wine jus and truffle mash', 28000, 6, 'https://images.unsplash.com/photo-1432139509613-5c4255815697?auto=format&fit=crop&w=900&q=80');
 
 -- Tables
 INSERT INTO restaurant_tables (id, label, seats, status) VALUES

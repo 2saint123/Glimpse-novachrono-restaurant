@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { FiMenu, FiX, FiUser, FiLogOut, FiCalendar, FiShoppingBag } from "react-icons/fi";
+import { MdRestaurant } from "react-icons/md";
 import { useAuth } from "../state/AuthContext";
 
 const links = [
@@ -30,7 +31,9 @@ export default function Navbar() {
         <Link to="/" className="flex items-center gap-3 group">
           <div className="relative">
             <div className="absolute inset-0 bg-gradient rounded-xl blur-sm opacity-75 group-hover:opacity-100 transition"></div>
-            <span className="relative grid h-12 w-12 place-items-center rounded-xl bg-gradient text-xl font-black text-dark">G</span>
+            <span className="relative grid h-12 w-12 place-items-center rounded-xl bg-gradient text-2xl text-dark">
+              <MdRestaurant />
+            </span>
           </div>
           <div className="flex flex-col">
             <span className="text-xl font-black tracking-tight text-gold">GLIMPSE</span>
